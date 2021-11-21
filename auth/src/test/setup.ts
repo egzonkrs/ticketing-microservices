@@ -29,3 +29,5 @@ afterAll(async () => {
   await mongo.stop();
   await mongoose.connection.close();
 })
+
+jest.setTimeout(999999)
