@@ -1,9 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { app } from '../app';
 
 let mongo: any;
-
 // qeky hook bohet run before all of our tests
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdwerklfjsdlfjs';
@@ -28,6 +26,6 @@ beforeEach(async () => {
 afterAll(async () => {
   await mongo.stop();
   await mongoose.connection.close();
-})
+});
 
-jest.setTimeout(999999)
+jest.setTimeout(999999);
