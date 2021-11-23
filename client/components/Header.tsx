@@ -1,14 +1,14 @@
-import type { NextPage } from 'next';
+import type { NextComponentType } from 'next';
 // import Head from 'next/head'
 // import Image from 'next/image'
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+const Singup: NextComponentType = () => {
   return (
     <div>
-      <p>asdasd</p>
+      <p>singup</p>
     </div>
   );
 };
 
-export default Home;
+export default Singup;

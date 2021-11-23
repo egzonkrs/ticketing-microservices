@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import 'express-async-errors';
@@ -12,12 +12,12 @@ import { NotFoundError } from './errors/not-found-error';
 
 const app = express();
 
-// app.set('trust proxy', true); UNCOMMENT THIS BEFORE DEPLOYING!! 
+app.set('trust proxy', true); //UNCOMMENT THIS BEFORE DEPLOYING!! 
 app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: false, // ktheje ne true kur te bojme deploy
+    secure: true, // ktheje ne true kur te bojme deploy
     // secure: process.env.NODE_ENV !== 'test', // ktheje ne true kur te bojme deploy
   })
 );
@@ -27,7 +27,7 @@ app.use(signupRouter);
 app.use(signoutRouter);
 app.use(currentUserRouter);
 
-app.all('*', async (req, res) => {
+app.all('*', async (req: Request, res: Response) => {
   throw new NotFoundError();
 });
 
