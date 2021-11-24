@@ -11,16 +11,35 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  // FormHelperText,
 } from '@chakra-ui/react';
+// import axios from 'axios';
 import { useState } from 'react';
+import agent from '../../agent';
 
 export default function SignUp() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  // const [errors, setErrors] = useState<any>([]);
 
-  const onSubmit = (event: React.SyntheticEvent) => {
+  const onSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    console.log(email, password);
+
+    try {
+      const creds = {
+        email,
+        password,
+      };
+
+      const response = await agent.Account.signup(creds);
+      console.log(response);
+      // const response = await axios.post('/api/users/signup', {
+      //   email,
+      //   password,
+      // });
+    } catch (error: any) {
+      console.log(error.response.data.errors);
+    }
   };
 
   return (
@@ -45,8 +64,8 @@ export default function SignUp() {
           boxShadow={'xl'}
           p={8}
         >
-          <form onSubmit={onSubmit}>
-            <Stack spacing={4}>
+          <form onSubmit={onSubmit} noValidate>
+            <Stack spacing={10}>
               <FormControl id="email">
                 <FormLabel>Email Address</FormLabel>
                 <Input
@@ -54,10 +73,14 @@ export default function SignUp() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                {/* <FormHelperText color={'red.600'} fontWeight={'semibold'}>
+                  Email is in use
+                </FormHelperText> */}
               </FormControl>
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>
                 <Input
+                  isInvalid
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

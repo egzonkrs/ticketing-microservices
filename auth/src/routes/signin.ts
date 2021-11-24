@@ -24,11 +24,11 @@ router.post('/api/users/signin',
 
     const existingUser = await User.findOne({ email });
 
-    if (!existingUser) throw new BadRequestError("Invalid credentials");
+    if (!existingUser) throw new BadRequestError("Invalid credentials", "email");
 
     const passwordMatch = await Password.compare(existingUser.password, password);
 
-    if (!passwordMatch) throw new BadRequestError("Invalid credentials");
+    if (!passwordMatch) throw new BadRequestError("Invalid credentials", "password");
 
     // Generate JSON Web Token
     const userJwt = jwt.sign(
