@@ -13,7 +13,7 @@ const requests = {
 };
 
 const Account = {
-  current: () => requests.get<CurrentUser>('/currentuser'),
+  current: () => requests.get<CurrentUser>('/api/users/currentuser'),
   signup: (user: UserFormValues) => requests.post<User>('/api/users/signup', user),
   signin: (user: UserFormValues) => requests.post<User>('/api/users/signin', user),
 };

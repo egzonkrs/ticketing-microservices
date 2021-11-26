@@ -11,35 +11,27 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  // FormHelperText,
+  FormHelperText,
 } from '@chakra-ui/react';
-// import axios from 'axios';
+
+import Router from 'next/router';
 import { useState } from 'react';
-import agent from '../../agent';
+import useRequest from '../../hooks/useRequest';
 
 export default function SignUp() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  // const [errors, setErrors] = useState<any>([]);
+
+  const { doRequest, errors } = useRequest({
+    method: 'signup',
+    body: { email, password },
+    onSuccess: () => Router.push('/'),
+  });
 
   const onSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-
-    try {
-      const creds = {
-        email,
-        password,
-      };
-
-      const response = await agent.Account.signup(creds);
-      console.log(response);
-      // const response = await axios.post('/api/users/signup', {
-      //   email,
-      //   password,
-      // });
-    } catch (error: any) {
-      console.log(error.response.data.errors);
-    }
+    await doRequest();
+    // Router.push('/');
   };
 
   return (
@@ -65,26 +57,56 @@ export default function SignUp() {
           p={8}
         >
           <form onSubmit={onSubmit} noValidate>
-            <Stack spacing={10}>
-              <FormControl id="email">
+            <Stack spacing={1}>
+              <FormControl id="email" minHeight={'93px'}>
+                {/* {JSON.stringify(errors)} */}
+                {/* {JSON.stringify(errors.length)} */}
                 <FormLabel>Email Address</FormLabel>
                 <Input
+                  isInvalid={
+                    errors.errors != null && errors.errors['email']
+                      ? true
+                      : false
+                  }
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                {/* <FormHelperText color={'red.600'} fontWeight={'semibold'}>
-                  Email is in use
-                </FormHelperText> */}
+                {errors.errors != null && (
+                  <>
+                    <FormHelperText
+                      marginTop={0.5}
+                      color={'red.600'}
+                      fontWeight={'bold'}
+                    >
+                      {errors.errors['email']}
+                    </FormHelperText>
+                  </>
+                )}
               </FormControl>
-              <FormControl id="password">
+              <FormControl id="password" minHeight={'93px'}>
                 <FormLabel>Password</FormLabel>
                 <Input
-                  isInvalid
+                  isInvalid={
+                    errors.errors != null && errors.errors['password']
+                      ? true
+                      : false
+                  }
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                {errors.errors != null && (
+                  <>
+                    <FormHelperText
+                      marginTop={0.5}
+                      color={'red.600'}
+                      fontWeight={'bold'}
+                    >
+                      {errors.errors['password']}
+                    </FormHelperText>
+                  </>
+                )}
               </FormControl>
               <Stack spacing={10}>
                 <Stack
