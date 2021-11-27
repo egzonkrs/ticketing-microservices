@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { NextApiRequest, NextPage, NextPageContext } from 'next';
+import { GetStaticPropsContext, NextPageContext } from 'next';
 
 interface Props {
-  context: NextPageContext;
+  context: any;
 }
 
 export interface Headers {
@@ -14,14 +14,12 @@ export default function buildClient({ context }: Props) {
   const { req } = context;
   if (typeof window === 'undefined') {
     // we are on the server
-
     return axios.create({
-      baseURL: 'http://ingress-nginx.ingress-nginx.svc.cluster.local',
+      baseURL: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
       headers: req!.headers as Headers
     });
   } else {
     // we must be on the browser
-
     return axios.create({
       baseURL: '/',
     });
