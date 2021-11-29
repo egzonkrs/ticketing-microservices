@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button,
@@ -14,26 +13,22 @@ import {
   FormHelperText,
 } from '@chakra-ui/react';
 
-import Router from 'next/router';
-import useRequest from '../../hooks/useRequest';
 import { useState } from 'react';
+import Router, { useRouter } from 'next/router';
+import useRequest from '../../hooks/useRequest';
 
-interface Props {
-  color: string;
-  host: string;
-}
-
-export default function SignIn({ color, host }: Props) {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+export default function SignUp() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const { doRequest, errors } = useRequest({
-    method: 'signin',
+    method: 'signup',
     body: { email, password },
     onSuccess: () => Router.push('/'),
   });
 
-  const onSubmit = async (event: React.SyntheticEvent) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     await doRequest();
     // Router.push('/');
@@ -48,12 +43,11 @@ export default function SignIn({ color, host }: Props) {
     >
       <Stack spacing={8} mx={'auto'} minW={'sm'} py={12} px={6}>
         <Stack align={'center'}>
-          {color} - - - - - - {host}
           <Heading fontSize={'2xl'} color={'black'}>
-            Sign in to your account
+            Create your account
           </Heading>
           <Text fontSize={'base'} color={'gray.800'}>
-            and start buying tickets 🤙
+            to enjoy all of our cool features ✌️
           </Text>
         </Stack>
         <Box
@@ -114,13 +108,13 @@ export default function SignIn({ color, host }: Props) {
                   </>
                 )}
               </FormControl>
-              <Stack spacing={10}>
+              <Stack spacing={2}>
                 <Stack
                   direction={{ base: 'column', sm: 'row' }}
                   align={'start'}
                   justify={'space-between'}
                 >
-                  <Checkbox>Remember me</Checkbox>
+                  {/* <Checkbox>Remember me</Checkbox> */}
                   <Link color={'blue.400'}>Forgot password?</Link>
                 </Stack>
                 <Button
@@ -130,9 +124,22 @@ export default function SignIn({ color, host }: Props) {
                   _hover={{
                     bg: 'blue.700',
                   }}
+                  marginTop={4}
                 >
-                  Sign in
+                  Sign up
                 </Button>
+                <Text textAlign={'center'} py={2}>
+                  or
+                </Text>
+                <hr />
+                <Link
+                  color={'blue.400'}
+                  onClick={() => router.push('/auth/signin')}
+                  textAlign={'center'}
+                  paddingTop={2}
+                >
+                  Sign in here
+                </Link>
               </Stack>
             </Stack>
           </form>

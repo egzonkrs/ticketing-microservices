@@ -1,18 +1,8 @@
 import { useState } from 'react';
-import agent from '../agent';
-import { User } from '../models/user';
+import agent from '../api/agent';
 
-interface Props {
-  method: 'signin' | 'signup';
-  body: {
-    email: string;
-    password: string;
-  };
-  onSuccess: (user: User) => void;
-}
-
-export default function useRequest({ method, body, onSuccess }: Props) {
-  const [errors, setErrors] = useState<any>({});
+export default function useRequest({ method, body, onSuccess }) {
+  const [errors, setErrors] = useState({});
 
   const doRequest = async () => {
     try {
@@ -25,11 +15,11 @@ export default function useRequest({ method, body, onSuccess }: Props) {
       }
 
       console.log(response);
-    } catch (error: any) {
+    } catch (error) {
       // console.log(error.response.data.errors);
       // pv - previous valuse cv - current value
       setErrors({
-        errors: error.response.data.errors.reduce((pv: any, cv: any) => {
+        errors: error.response.data.errors.reduce((pv, cv) => {
           pv[cv.field] = cv.message;
           return pv;
         }, {}),

@@ -12,19 +12,27 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
+  Menu,
+  MenuList,
+  MenuDivider,
+  MenuItem,
+  MenuButton,
+  Wrap,
+  Avatar,
 } from '@chakra-ui/react';
+
 import {
   HamburgerIcon,
   CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
+
 import { useRouter } from 'next/router';
 import AppLogo from '../components/AppLogo';
 
-export default function WithSubnavigation() {
+export default function WithSubnavigation({ currentUser }) {
   const router = useRouter();
   const { isOpen, onToggle } = useDisclosure();
 
@@ -35,7 +43,7 @@ export default function WithSubnavigation() {
         color={useColorModeValue('gray.600', 'white')}
         minH={'60px'}
         py={{ base: 2 }}
-        px={{ base: 2 }}
+        px={{ lg: 40 }}
         borderBottom={1}
         borderStyle={'solid'}
         borderColor={useColorModeValue('gray.200', 'gray.900')}
@@ -57,14 +65,6 @@ export default function WithSubnavigation() {
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
           <AppLogo />
-          {/* <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'Consolas'}
-            fontWeight={'bold'}
-            color={useColorModeValue('gray.800', 'white')}
-          >
-            Ticketing
-          </Text> */}
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={20}>
             <DesktopNav />
@@ -77,27 +77,79 @@ export default function WithSubnavigation() {
           direction={'row'}
           spacing={6}
         >
-          <Button
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            onClick={() => router.push('/auth/signin')}
-          >
-            Sign In
-          </Button>
-          <Button
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'blue.800'}
-            _hover={{
-              bg: 'blue.500',
-            }}
-            onClick={() => router.push('/auth/signup')}
-          >
-            Sign Up
-          </Button>
+          {currentUser && (
+            <>
+              <Wrap>
+                <Flex justifyItems={'center'} alignItems={'center'}>
+                  <Text
+                    fontWeight={'bold'}
+                    marginRight={3}
+                    verticalAlign={'middle'}
+                  >
+                    {currentUser.email}
+                  </Text>
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                      id="menu-button-87234893"
+                    >
+                      <Avatar
+                        size={'sm'}
+                        src={
+                          'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                        }
+                      />
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem fontWeight={'semibold'}>Settings</MenuItem>
+                      <MenuItem fontWeight={'semibold'}>Avatar</MenuItem>
+                      <MenuDivider />
+                      <MenuItem
+                        fontWeight={'semibold'}
+                        onClick={() => router.push('/auth/signout')}
+                      >
+                        Logout
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                  {/* <Avatar
+                    size={'sm'}
+                    name="Dan Abrahmov"
+                    src="https://bit.ly/dan-abramov"
+                  /> */}
+                </Flex>
+              </Wrap>
+            </>
+          )}
+          {!currentUser && (
+            <>
+              <Button
+                fontSize={'sm'}
+                fontWeight={400}
+                variant={'link'}
+                onClick={() => router.push('/auth/signin')}
+              >
+                Sign In
+              </Button>
+              <Button
+                display={{ base: 'none', md: 'inline-flex' }}
+                fontSize={'sm'}
+                fontWeight={600}
+                color={'white'}
+                bg={'blue.800'}
+                _hover={{
+                  bg: 'blue.500',
+                }}
+                onClick={() => router.push('/auth/signup')}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
         </Stack>
       </Flex>
 
@@ -109,6 +161,7 @@ export default function WithSubnavigation() {
 }
 
 const DesktopNav = () => {
+  const router = useRouter();
   const linkColor = useColorModeValue('gray.600', 'gray.200');
   const linkHoverColor = useColorModeValue('gray.800', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
@@ -116,12 +169,22 @@ const DesktopNav = () => {
   return (
     <Stack direction={'row'} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
+        <Flex
+          key={navItem.label}
+          justify={'flex-center'}
+          align={'center'}
+          // flex={1}
+        >
+          <Popover
+            trigger={'hover'}
+            placement={'bottom-start'}
+            id="878328-removes-error"
+          >
             <PopoverTrigger>
-              <Link
+              <Text
                 p={2}
-                href={navItem.href ?? '#'}
+                // href={navItem.href ?? '#'}
+                cursor={'pointer'}
                 fontSize={'sm'}
                 fontWeight={500}
                 color={linkColor}
@@ -129,9 +192,10 @@ const DesktopNav = () => {
                   textDecoration: 'none',
                   color: linkHoverColor,
                 }}
+                onClick={() => router.push(`${navItem.href ?? '/'}`)}
               >
                 {navItem.label}
-              </Link>
+              </Text>
             </PopoverTrigger>
 
             {navItem.children && (
@@ -151,13 +215,13 @@ const DesktopNav = () => {
               </PopoverContent>
             )}
           </Popover>
-        </Box>
+        </Flex>
       ))}
     </Stack>
   );
 };
 
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
+const DesktopSubNav = ({ label, href, subLabel }) => {
   return (
     <Link
       href={href}
@@ -208,7 +272,7 @@ const MobileNav = () => {
   );
 };
 
-const MobileNavItem = ({ label, children, href }: NavItem) => {
+const MobileNavItem = ({ label, children, href }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -261,16 +325,13 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   );
 };
 
-interface NavItem {
-  label: string;
-  subLabel?: string;
-  children?: Array<NavItem>;
-  href?: string;
-}
-
-const NAV_ITEMS: Array<NavItem> = [
+const NAV_ITEMS = [
   {
     label: 'Home',
+    href: '/',
+  },
+  {
+    label: 'Work',
     children: [
       {
         label: 'Explore Design Work',
@@ -283,10 +344,9 @@ const NAV_ITEMS: Array<NavItem> = [
         href: '#',
       },
     ],
-    href: '/',
   },
   {
-    label: 'Find Work',
+    label: 'Contact',
     children: [
       {
         label: 'Job Board',
@@ -299,14 +359,10 @@ const NAV_ITEMS: Array<NavItem> = [
         href: '#',
       },
     ],
-    href: '/',
-  },
-  {
-    label: 'Learn Design',
     href: '#',
   },
   {
-    label: 'Hire Designers',
+    label: 'About',
     href: '#',
   },
 ];
