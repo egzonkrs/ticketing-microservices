@@ -43,7 +43,7 @@ export default function WithSubnavigation({ currentUser }) {
         color={useColorModeValue('gray.600', 'white')}
         minH={'60px'}
         py={{ base: 2 }}
-        px={{ lg: 40 }}
+        px={{ base: 4, md: 4, lg: 40 }}
         borderBottom={1}
         borderStyle={'solid'}
         borderColor={useColorModeValue('gray.200', 'gray.900')}
@@ -63,10 +63,13 @@ export default function WithSubnavigation({ currentUser }) {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex
+          flex={{ base: 1 }}
+          justify={{ base: 'center', md: 'start' }}
+          align={'center'}
+        >
           <AppLogo />
-
-          <Flex display={{ base: 'none', md: 'flex' }} ml={20}>
+          <Flex display={{ base: 'none', md: 'flex' }} ml={6}>
             <DesktopNav />
           </Flex>
         </Flex>
@@ -75,7 +78,7 @@ export default function WithSubnavigation({ currentUser }) {
           flex={{ base: 1, md: 0 }}
           justify={'flex-end'}
           direction={'row'}
-          spacing={6}
+          spacing={2}
         >
           {currentUser && (
             <>
@@ -85,6 +88,7 @@ export default function WithSubnavigation({ currentUser }) {
                     fontWeight={'bold'}
                     marginRight={3}
                     verticalAlign={'middle'}
+                    display={{ base: 'none', md: 'block' }}
                   >
                     {currentUser.email}
                   </Text>
@@ -95,7 +99,7 @@ export default function WithSubnavigation({ currentUser }) {
                       variant={'link'}
                       cursor={'pointer'}
                       minW={0}
-                      id="menu-button-87234893"
+                      id="menu-button-6123123"
                     >
                       <Avatar
                         size={'sm'}
@@ -116,11 +120,6 @@ export default function WithSubnavigation({ currentUser }) {
                       </MenuItem>
                     </MenuList>
                   </Menu>
-                  {/* <Avatar
-                    size={'sm'}
-                    name="Dan Abrahmov"
-                    src="https://bit.ly/dan-abramov"
-                  /> */}
                 </Flex>
               </Wrap>
             </>
@@ -128,9 +127,15 @@ export default function WithSubnavigation({ currentUser }) {
           {!currentUser && (
             <>
               <Button
+                display={{ md: 'inline-flex' }}
                 fontSize={'sm'}
-                fontWeight={400}
-                variant={'link'}
+                fontWeight={600}
+                color={'blue.500'}
+                bg={'white'}
+                _hover={{
+                  bg: '#ededed',
+                  textDecoration: 'underline',
+                }}
                 onClick={() => router.push('/auth/signin')}
               >
                 Sign In

@@ -108,23 +108,15 @@ export default function SignUp() {
                   </>
                 )}
               </FormControl>
-              <Stack spacing={2}>
-                <Stack
-                  direction={{ base: 'column', sm: 'row' }}
-                  align={'start'}
-                  justify={'space-between'}
-                >
-                  {/* <Checkbox>Remember me</Checkbox> */}
-                  <Link color={'blue.400'}>Forgot password?</Link>
-                </Stack>
+              <Stack spacing={1}>
                 <Button
+                  marginTop={2}
                   type="submit"
                   bg={'blue.800'}
                   color={'white'}
                   _hover={{
                     bg: 'blue.700',
                   }}
-                  marginTop={4}
                 >
                   Sign up
                 </Button>
@@ -133,10 +125,11 @@ export default function SignUp() {
                 </Text>
                 <hr />
                 <Link
-                  color={'blue.400'}
+                  color={'blue.500'}
                   onClick={() => router.push('/auth/signin')}
                   textAlign={'center'}
                   paddingTop={2}
+                  fontWeight={'semibold'}
                 >
                   Sign in here
                 </Link>

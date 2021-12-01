@@ -18,6 +18,8 @@ export default function useRequest({ method, body, onSuccess }) {
     } catch (error) {
       // console.log(error.response.data.errors);
       // pv - previous valuse cv - current value
+      // console.log(error.response);
+      // console.log(error.response.data);
       setErrors({
         errors: error.response.data.errors.reduce((pv, cv) => {
           pv[cv.field] = cv.message;

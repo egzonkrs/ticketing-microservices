@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { app } from './app';
 
 const start = async () => {
-  const port: number = 3000 || process.env.PORT;
+  const port = process.env.PORT || 3000;
 
   if (!process.env.JWT_KEY) {
     throw new Error('JWT_KEY must be defined!');

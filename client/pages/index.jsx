@@ -1,7 +1,7 @@
 import buildClient from '../api/build-client';
 
 const Home = (currentUser) => {
-  console.log(currentUser);
+  // console.log(currentUser);
   return (
     <div>
       {/* {JSON.stringify(currentUser)} */}
@@ -18,12 +18,10 @@ const Home = (currentUser) => {
 };
 
 Home.getInitialProps = async (context) => {
-  console.log('L A N D I N G  P A G E');
+  // console.log('L A N D I N G  P A G E');
   const client = buildClient(context);
   const { data } = await client.get('/api/users/currentuser');
-
-  console.log(data);
-
+  // console.log(data);
   return data;
 };
 

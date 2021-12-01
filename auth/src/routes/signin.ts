@@ -2,10 +2,9 @@ import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { body } from 'express-validator';
 import { User } from '../models/user';
-
-import { validateRequest } from '../middlewares/validate-request';
-import { BadRequestError } from '../errors/bad-request-error';
 import { Password } from '../services/password';
+
+import { validateRequest, BadRequestError } from '@ek-ticketing/common';
 
 const router = express.Router();
 

@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button,
@@ -15,10 +14,11 @@ import {
 } from '@chakra-ui/react';
 
 import { useState } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import useRequest from '../../hooks/useRequest';
 
 export default function SignIn({ color, host }) {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -109,16 +109,9 @@ export default function SignIn({ color, host }) {
                   </>
                 )}
               </FormControl>
-              <Stack spacing={10}>
-                <Stack
-                  direction={{ base: 'column', sm: 'row' }}
-                  align={'start'}
-                  justify={'space-between'}
-                >
-                  <Checkbox>Remember me</Checkbox>
-                  <Link color={'blue.400'}>Forgot password?</Link>
-                </Stack>
+              <Stack spacing={1}>
                 <Button
+                  marginTop={2}
                   type="submit"
                   bg={'blue.800'}
                   color={'white'}
@@ -128,6 +121,19 @@ export default function SignIn({ color, host }) {
                 >
                   Sign in
                 </Button>
+                <Text textAlign={'center'} py={2}>
+                  or
+                </Text>
+                <hr />
+                <Link
+                  color={'blue.500'}
+                  onClick={() => router.push('/auth/signup')}
+                  textAlign={'center'}
+                  paddingTop={2}
+                  fontWeight={'semibold'}
+                >
+                  Sign up here
+                </Link>
               </Stack>
             </Stack>
           </form>
