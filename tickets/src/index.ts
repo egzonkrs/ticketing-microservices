@@ -5,9 +5,9 @@ const start = async () => {
   const port = process.env.PORT || 3000;
 
   if (!process.env.JWT_KEY) {
-    throw new Error('[Auth] - JWT_KEY must be defined!');
+    throw new Error('[Tickets] - JWT_KEY must be defined!');
   } else if (!process.env.MONGO_URI) {
-    throw new Error('[Auth] - MONGO_URI must be defined!');
+    throw new Error('[Tickets] - MONGO_URI must be defined!');
   }
 
   try {
