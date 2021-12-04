@@ -3,13 +3,28 @@ import mongoose from "mongoose";
 import { app } from "../../app";
 import { signin } from "../../test/signin-helper";
 
-it('return a 404 if the ticket is not found', async () => {
-  const id = new mongoose.Types.ObjectId().toHexString();
+const createTicket = () => {
+  return request(app)
+    .post('/api/tickets/')
+    .set('Cookie', signin())
+    .send({
+      title: 'asdtrsdf',
+      price: 20
+    });
+}
 
-  await request(app)
-    .get(`/api/tickets/${id}`)
+it('can fetch a list of tickets', async () => {
+  // we create 3 tickets
+  await createTicket();
+  await createTicket();
+  await createTicket();
+
+  const response = await request(app)
+    .get('/api/tickets')
     .send()
-    .expect(404);
+    .expect(200);
+
+  expect(response.body.length).toEqual(3);
 });
 
 it('return the ticket if the ticket is found', async () => {
