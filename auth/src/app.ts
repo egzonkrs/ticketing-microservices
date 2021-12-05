@@ -27,6 +27,7 @@ app.use(signoutRouter);
 app.use(currentUserRouter);
 
 app.all('*', async (req: Request, res: Response) => {
+  console.error('Route not found - [*]');
   throw new NotFoundError();
 });
 

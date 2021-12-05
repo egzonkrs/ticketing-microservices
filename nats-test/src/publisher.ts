@@ -5,7 +5,7 @@ const stan = nats.connect('ticketing', 'abc', {
 });
 
 stan.on('connect', () => {
-  console.log('Publisher connected to NATS');
+  console.log('');
 
   const data = JSON.stringify({
     id: '123',

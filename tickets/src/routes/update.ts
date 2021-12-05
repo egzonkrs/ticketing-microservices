@@ -14,7 +14,7 @@ router.put('/api/tickets/:id', requireAuth, [
     .isFloat({ gt: 0 })
     .withMessage('Price is required and must be greater than 0')
 ], validateRequest, async (req: Request, res: Response) => {
-  console.log('wWwhyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+
   const ticket = await Ticket.findById(req.params.id);
 
   if (!ticket) {
@@ -24,7 +24,6 @@ router.put('/api/tickets/:id', requireAuth, [
   if (ticket.userId !== req.currentUser!.id) {
     throw new NotAuthorizedError();
   }
-
   ticket.set({
     title: req.body.title,
     price: req.body.price
