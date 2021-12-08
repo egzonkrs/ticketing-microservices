@@ -1,5 +1,6 @@
 import { randomBytes } from 'crypto';
-import nats, { Message } from 'node-nats-streaming';
+import nats, { Message, Stan } from 'node-nats-streaming';
+import { TicketCreatedListener } from './events/ticket-created-listener';
 
 console.clear();
 // stan is (client), "nats" backwards is "stan"
@@ -11,30 +12,25 @@ const stan = nats.connect('ticketing', randomBytes(4).toString('hex'), {
 stan.on('connect', () => {
   console.log('Listener connected to NATS');
 
-  const options = stan.subscriptionOptions()
-    .setManualAckMode(true)
-
-
-  const subscription = stan.subscribe(
-    'ticket:created',
-    'tickets-service-queue-group',
-    options
-  );
-
-  subscription.on('message', (msg: Message) => {
-    const data = msg.getData();
-
-    if (typeof data === 'string') {
-      console.log(`Received event number #${msg.getSequence()}, with data: ${data}`);
-    }
-    console.log('Message received');
-
-    msg.ack();
+  stan.on('close', () => {
+    console.log('NATS connection closed!');
+    process.exit();
   });
+
+  new TicketCreatedListener(stan).listen();
 });
 
+// Keto lines poshte jane tu listen per interrupt ose terminate signals.
+// interrupt 14-14 Graceful client shutdown
+process.on('SIGINT', () => stan.close());
+// terminate 14-14 Graceful client shutdown
+process.on('SIGTERM', () => stan.close());
+
 /*
-  - Important default Behavior! -
+- Important default Behavior! -
+  
+  const options = stan.subscriptionOptions().setManualAckMode(true)
+
   Kur na pranojna event prej subscriptions,
   edhe dojna me kry ni funksion si p.sh me rujt
   te dhana ne database, por ne ate moment shfaqet nje error ose dicka
