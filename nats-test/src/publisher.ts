@@ -16,7 +16,8 @@ stan.on('connect', async () => {
     await publisher.publish({
       id: '123123',
       title: 'UFC 254',
-      price: 100
+      price: 100,
+      userId: 'asdasd'
     })
   } catch (error) {
     console.error(error);

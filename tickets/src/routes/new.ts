@@ -3,31 +3,36 @@ import { requireAuth, validateRequest } from '@ek-ticketing/common';
 import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
 import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
-router.post('/api/tickets', requireAuth, [
-  body('title').not().isEmpty().withMessage('Title is required'),
-  body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0')
-], validateRequest, async (req: Request, res: Response) => {
-  const { title, price } = req.body;
+router.post('/api/tickets', requireAuth,
+  [
+    body('title').not().isEmpty().withMessage('Title is required'),
+    body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0')
+  ],
+  validateRequest, async (req: Request, res: Response) => {
+    const { title, price } = req.body;
+    console.log('PARA BUILD ---------------')
+    const ticket = Ticket.build({
+      title,
+      price,
+      userId: req.currentUser!.id
+    });
+    await ticket.save();
 
-  const ticket = Ticket.build({
-    title,
-    price,
-    userId: req.currentUser!.id
-  });
-  await ticket.save();
+    console.log('PAS BUILD ---------------')
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId
+    });
 
-  new TicketCreatedPublisher(client).publish({
-    id: ticket.id,
-    title: ticket.title,
-    price: ticket.price,
-    userId: ticket.userId
-  });
-
-  res.status(201).send(ticket);
-}
+    console.log('SENDING STATUS ---------------')
+    res.status(201).send(ticket);
+  }
 );
 
 export { router as createTicketRouter };
