@@ -14,7 +14,7 @@ router.post('/api/tickets', requireAuth,
   ],
   validateRequest, async (req: Request, res: Response) => {
     const { title, price } = req.body;
-    console.log('PARA BUILD ---------------')
+
     const ticket = Ticket.build({
       title,
       price,
@@ -22,7 +22,6 @@ router.post('/api/tickets', requireAuth,
     });
     await ticket.save();
 
-    console.log('PAS BUILD ---------------')
     await new TicketCreatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
       title: ticket.title,
@@ -30,7 +29,6 @@ router.post('/api/tickets', requireAuth,
       userId: ticket.userId
     });
 
-    console.log('SENDING STATUS ---------------')
     res.status(201).send(ticket);
   }
 );
