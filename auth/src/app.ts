@@ -16,8 +16,10 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
+    httpOnly: true,
     secure: false, // ktheje ne true kur te bojme deploy
     // secure: process.env.NODE_ENV !== 'test', // ktheje ne true kur te bojme deploy
+    name: 'ticketing:session',
   })
 );
 
