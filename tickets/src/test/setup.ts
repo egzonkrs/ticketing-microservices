@@ -1,6 +1,8 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
+jest.mock('../nats-wrapper.ts');
+
 let mongo: any;
 // qeky hook bohet run before all of our tests
 beforeAll(async () => {
@@ -14,6 +16,7 @@ beforeAll(async () => {
 
 // qeky hook bohet run before each of our tests (before our test starts)
 beforeEach(async () => {
+  jest.clearAllMocks();
   // para se me run testin i fshijme all data ne mongodb memory server
   const collections = await mongoose.connection.db.collections();
 
