@@ -4,9 +4,10 @@ import { body } from "express-validator";
 import mongoose from "mongoose";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
-// import { Ticket } from "../models/ticket";
 
 const router = express.Router();
+
+const EXPIRATION_WINDOW_SECONDS = 15 * 60; // 15 Minutes
 
 router.post('/api/orders', requireAuth,
   [
@@ -46,14 +47,25 @@ router.post('/api/orders', requireAuth,
     /*
       3. Calculate an expiration date for this order, (15 min to pay) 
     */
+    const expiration = new Date();
+    expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
+
     /*
       4. Build the order and save it to the database
     */
+    const order = Order.build({
+      userId: req.currentUser!.id,
+      status: OrderStatus.Created,
+      expiresAt: expiration,
+      ticket: ticket,
+    });
+    await order.save();
+
     /*
       5. Tell the rest of app (other services that need to know) that a order has been created.
       so we publish an event saying that an order was created.
     */
-    res.send({});
+    res.status(201).send(order);
   });
 
 export { router as newOrderRouter }; 
