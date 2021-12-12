@@ -33,14 +33,7 @@ it('returns an error if the ticket is already reserved', async () => {
     status: OrderStatus.Created,
     expiresAt: new Date()
   })
-  await order.save();
-  await request(app)
-    .post('/api/orders')
-    .set('Cookie', signin())
-    .send({
-      ticketId: ticket.id
-    })
-    .expect(400);
+
 });
 
 it('reserves a ticket', async () => {
@@ -57,3 +50,23 @@ it('reserves a ticket', async () => {
     .send({ ticketId: ticket.id })
     .expect(201);
 });
+
+
+it('reserves a ticket', async () => {
+  // create ticket
+  const ticket = Ticket.build({
+    title: 'Abu Dhabi Grand Prix 2021 Max Verstappen Champion of the world, PAIN!',
+    price: 420
+  });
+  await ticket.save();
+
+  await order.save();
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({
+      ticketId: ticket.id
+    })
+    .expect(400);
+});
+

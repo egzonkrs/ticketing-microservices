@@ -18,6 +18,7 @@ router.post('/api/orders', requireAuth,
       .withMessage('Ticket id must be provided')
   ], validateRequest,
   async (req: Request, res: Response) => {
+    console.log('hereee -------------')
     const { ticketId } = req.body;
     /*
       1. Find the ticket the user is trying to order in the database if 
