@@ -2,7 +2,7 @@ import 'express-async-errors';
 import express, { Request, Response } from 'express';
 import cookieSession from 'cookie-session';
 import { json } from 'body-parser';
-import { errorHandler, NotFoundError } from '@ek-ticketing/common';
+import { currentUser, errorHandler, NotFoundError } from '@ek-ticketing/common';
 
 import { indexOrderRouter } from './routes';
 import { deleteOrderRouter } from './routes/delete';
@@ -20,6 +20,8 @@ app.use(
     // secure: process.env.NODE_ENV !== 'test', // ktheje ne true kur te bojme deploy
   })
 );
+
+app.use(currentUser);
 
 app.use(indexOrderRouter);
 app.use(newOrderRouter);

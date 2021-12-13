@@ -23,6 +23,5 @@ export const signin = () => {
   const base64 = Buffer.from(sessionJSON).toString('base64');
 
   // return a string that is the cookie with encoded data
-  console.log(`express:sess=${base64}`)
   return [`express:sess=${base64}`];
 };

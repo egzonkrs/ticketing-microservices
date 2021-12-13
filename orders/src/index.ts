@@ -42,7 +42,7 @@ const start = async () => {
   }
 
   app.listen(port, () => {
-    console.log('[Auth] - Listening on port: ' + port);
+    console.log('[Orders] - Listening on port: ' + port);
   });
 };
 
