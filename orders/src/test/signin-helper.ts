@@ -11,7 +11,7 @@ export const signin = () => {
   };
 
   // Create JWT!
-  const token = sign(payload, process.env.JWT_KEY);
+  const token = sign(payload, process.env.JWT_KEY!);
 
   // Build session Object. { jwt: MY_JWT }
   const session = { jwt: token };
@@ -23,5 +23,6 @@ export const signin = () => {
   const base64 = Buffer.from(sessionJSON).toString('base64');
 
   // return a string that is the cookie with encoded data
+  console.log(`express:sess=${base64}`)
   return [`express:sess=${base64}`];
 };

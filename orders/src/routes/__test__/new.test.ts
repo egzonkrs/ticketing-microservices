@@ -7,6 +7,15 @@ import { OrderStatus } from '@ek-ticketing/common';
 import { Order } from '../../models/order';
 import { natsWrapper } from '../../nats-wrapper';
 
+it('index page test', async () => {
+  const response = await request(app)
+    .get('/api/orders')
+    .set('Cookie', signin())
+    .expect(200)
+  console.log(response.statusCode);
+  console.log(response.body);
+})
+
 it('return an error if the ticket does not exists', async () => {
   const ticketId = new mongoose.Types.ObjectId();
 
@@ -33,7 +42,14 @@ it('returns an error if the ticket is already reserved', async () => {
     status: OrderStatus.Created,
     expiresAt: new Date()
   })
-
+  await order.save();
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', signin())
+    .send({
+      ticketId: ticket.id
+    })
+    .expect(400);
 });
 
 it('reserves a ticket', async () => {
@@ -50,23 +66,3 @@ it('reserves a ticket', async () => {
     .send({ ticketId: ticket.id })
     .expect(201);
 });
-
-
-it('reserves a ticket', async () => {
-  // create ticket
-  const ticket = Ticket.build({
-    title: 'Abu Dhabi Grand Prix 2021 Max Verstappen Champion of the world, PAIN!',
-    price: 420
-  });
-  await ticket.save();
-
-  await order.save();
-  await request(app)
-    .post('/api/orders')
-    .set('Cookie', signin())
-    .send({
-      ticketId: ticket.id
-    })
-    .expect(400);
-});
-
