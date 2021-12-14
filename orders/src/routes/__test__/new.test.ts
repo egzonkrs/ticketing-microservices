@@ -5,16 +5,6 @@ import { Ticket } from '../../models/ticket';
 import { signin } from '../../test/signin-helper';
 import { OrderStatus } from '@ek-ticketing/common';
 import { Order } from '../../models/order';
-import { natsWrapper } from '../../nats-wrapper';
-
-// it('index page test', async () => {
-//   const response = await request(app)
-//     .get('/api/orders')
-//     .set('Cookie', signin())
-//     .expect(200);
-//   console.log(response.statusCode);
-//   console.log(response.body);
-// })
 
 it('return an error if the ticket does not exists', async () => {
   const ticketId = new mongoose.Types.ObjectId();
@@ -27,8 +17,6 @@ it('return an error if the ticket does not exists', async () => {
       ticketId: ticketId
     })
     .expect(404);
-
-  // expect(response.statusCode).toEqual(404);
 });
 
 it('returns an error if the ticket is already reserved', async () => {
@@ -69,3 +57,5 @@ it('reserves a ticket', async () => {
     .send({ ticketId: ticket.id })
     .expect(201);
 });
+
+it.todo('emits an order created event');
