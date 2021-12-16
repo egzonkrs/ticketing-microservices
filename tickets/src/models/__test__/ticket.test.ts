@@ -24,18 +24,13 @@ it('implements optimistic concurrency control', async () => {
   await firstInstance!.save();
 
   // Save the second fetched ticket and expect an error
-  // expect(async () => {
-  //   await secondInstance!.save();
-  // }).toThrow();
 
-  // Second fix - alternative
   try {
     await secondInstance!.save();
   } catch (err) {
-    console.log(err);
-    return;
-    // done();
+    expect(err).toMatch('error');
   }
+
   throw new Error('Should not reach this point');
 });
 

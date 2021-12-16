@@ -38,7 +38,8 @@ router.put('/api/tickets/:id', requireAuth, [
     id: ticket.id,
     title: ticket.title,
     price: ticket.price,
-    userId: ticket.userId
+    userId: ticket.userId,
+    version: ticket.version
   });
 
   // status code is default 200 
