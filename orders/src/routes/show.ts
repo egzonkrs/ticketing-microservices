@@ -18,7 +18,6 @@ router.get('/api/orders/:orderId', requireAuth, async (req: Request, res: Respon
   }
 
   res.send(order);
-}
-);
+});
 
 export { router as showOrderRouter }; 

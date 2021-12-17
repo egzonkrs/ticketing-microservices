@@ -22,8 +22,8 @@ export interface TicketDoc extends mongoose.Document {
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
   build(attrs: TicketAttrs): TicketDoc;
-  // findByEvent - eshte query per me find by id and previous version
   findByEvent(event: { id: string, version: number }): Promise<TicketDoc | null>;
+  // findByEvent - eshte query per me find by id and previous version
 }
 
 const ticketSchema = new mongoose.Schema({
@@ -47,6 +47,14 @@ const ticketSchema = new mongoose.Schema({
 
 ticketSchema.set('versionKey', 'version');
 ticketSchema.plugin(updateIfCurrentPlugin);
+// // pre - middleware that that's is going to run any time that we try to save a record
+// // e njejta sikur updateIfCurrentPlugin veq me implementim tonin nuk ka funksionu mire
+// ticketSchema.pre('save', function (done) {
+//   this.$where = {
+//     version: this.get('version') - 1
+//   };
+//   done();
+// });
 
 ticketSchema.statics.findByEvent = (event: { id: string, version: number }) => {
   return Ticket.findOne({
@@ -77,8 +85,7 @@ ticketSchema.methods.isReserved = async function () {
       ]
     }
   });
-
-  return !!existingOrder
+  return !!existingOrder;
 }
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);

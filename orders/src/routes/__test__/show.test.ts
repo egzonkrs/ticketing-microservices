@@ -1,4 +1,5 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 import { signin } from '../../test/signin-helper';
@@ -6,6 +7,7 @@ import { signin } from '../../test/signin-helper';
 it('fetches orders for a particular user', async () => {
   // Create three tickets
   const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'Sunny Hill Festival',
     price: 200
   });
@@ -13,7 +15,6 @@ it('fetches orders for a particular user', async () => {
   await ticket.save();
   const user = signin();
 
-  console.log('TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG 16')
   // Make a request to build an order with this ticket
   const { body: order } = await request(app)
     .post('/api/orders')
@@ -34,6 +35,7 @@ it('fetches orders for a particular user', async () => {
 it('return an error if one user tries to fetch another users order', async () => {
   // Create three tickets
   const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'Sunny Hill Festival',
     price: 200
   });

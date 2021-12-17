@@ -20,7 +20,6 @@ router.post('/api/orders', requireAuth,
       .withMessage('Ticket id must be provided')
   ], validateRequest,
   async (req: Request, res: Response) => {
-    console.log('hereee -------------')
     const { ticketId } = req.body;
     /*
       1. Find the ticket the user is trying to order in the database if 
@@ -29,8 +28,9 @@ router.post('/api/orders', requireAuth,
       send a malicious request to try to buy a ticket that dosen't exists.
     */
     const ticket = await Ticket.findById(ticketId);
-    if (!ticket) throw new NotFoundError();
-
+    if (!ticket) {
+      throw new NotFoundError();
+    }
     /*
       2. Make sure that this ticket is not already reserved (15 min time)
       imagine a lot of traffic, ex: 10 users try to purchase same ticket 
@@ -45,8 +45,9 @@ router.post('/api/orders', requireAuth,
     /* SEE: 2.4 If we find an order from that means the ticket IS reserved. */
     const isReserved = await ticket.isReserved();
 
-    if (isReserved) throw new BadRequestError('Ticket is already reserved', 'ticket');
-
+    if (isReserved) {
+      throw new BadRequestError('Ticket is already reserved', 'ticket');
+    }
     /*
       3. Calculate an expiration date for this order, (15 min to pay) 
     */
@@ -60,7 +61,7 @@ router.post('/api/orders', requireAuth,
       userId: req.currentUser!.id,
       status: OrderStatus.Created,
       expiresAt: expiration,
-      ticket: ticket,
+      ticket,
     });
     await order.save();
 
@@ -70,6 +71,7 @@ router.post('/api/orders', requireAuth,
     */
     new OrderCreatedPublisher(natsWrapper.client).publish({
       id: order.id,
+      version: order.version,
       status: order.status,
       userId: order.userId,
       expiresAt: order.expiresAt.toISOString(), // utc timestamp

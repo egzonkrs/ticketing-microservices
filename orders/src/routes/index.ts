@@ -14,7 +14,6 @@ router.get('/api/orders', requireAuth, async (req: Request, res: Response) => {
     also want to include the ticket that the order is for.
     So fetch the ticket and get its title and price...
   */
-
   res.send(orders);
 });
 
