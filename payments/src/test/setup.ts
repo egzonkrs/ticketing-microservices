@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 
 jest.mock('../nats-wrapper.ts');
 
+process.env.STRIPE_KEY = 'sk_test_51K8VkiB1T2BkgrQVl1ImW2tOMprDwhx1KyLmBj0spPxs7RfeRvmSbIHikFlvruimTFiNcFHXCA6OPr4UqbsX5f3b00en1tqfql';
+
 let mongo: any;
 // qeky hook bohet run before all of our tests
 beforeAll(async () => {
