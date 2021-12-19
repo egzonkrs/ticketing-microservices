@@ -3,11 +3,11 @@ import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
   if (!process.env.NATS_CLIENT_ID) {
-    throw new Error('[Tickets] - NATS_CLIENT_ID must be defined!');
+    throw new Error('[Expiration] - NATS_CLIENT_ID must be defined!');
   } else if (!process.env.NATS_URL) {
-    throw new Error('[Tickets] - NATS_URL must be defined!');
+    throw new Error('[Expiration] - NATS_URL must be defined!');
   } else if (!process.env.NATS_CLUSTER_ID) {
-    throw new Error('[Tickets] - NATS_CLUSTER_ID must be defined!');
+    throw new Error('[Expiration] - NATS_CLUSTER_ID must be defined!');
   }
 
   try {

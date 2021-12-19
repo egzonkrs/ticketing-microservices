@@ -1,20 +1,22 @@
 import mongoose from 'mongoose';
 import { app } from './app';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
 import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
   const port = process.env.PORT || 3000;
 
   if (!process.env.JWT_KEY) {
-    throw new Error('[Tickets] - JWT_KEY must be defined!');
+    throw new Error('[Payments] - JWT_KEY must be defined!');
   } else if (!process.env.MONGO_URI) {
-    throw new Error('[Tickets] - MONGO_URI must be defined!');
+    throw new Error('[Payments] - MONGO_URI must be defined!');
   } else if (!process.env.NATS_CLIENT_ID) {
-    throw new Error('[Tickets] - NATS_CLIENT_ID must be defined!');
+    throw new Error('[Payments] - NATS_CLIENT_ID must be defined!');
   } else if (!process.env.NATS_URL) {
-    throw new Error('[Tickets] - NATS_URL must be defined!');
+    throw new Error('[Payments] - NATS_URL must be defined!');
   } else if (!process.env.NATS_CLUSTER_ID) {
-    throw new Error('[Tickets] - NATS_CLUSTER_ID must be defined!');
+    throw new Error('[Payments] - NATS_CLUSTER_ID must be defined!');
   }
 
   try {
@@ -35,6 +37,8 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
     /*-----------------------------------------------------------------------*/
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
     /*-----------------------------------------------------------------------*/
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to mongodb');
@@ -43,7 +47,7 @@ const start = async () => {
   }
 
   app.listen(port, () => {
-    console.log('[Auth] - Listening on port: ' + port);
+    console.log('[Payments] - Listening on port: ' + port);
   });
 };
 
