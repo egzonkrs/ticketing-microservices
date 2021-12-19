@@ -1,7 +1,7 @@
 // mockResolvedValue - makes sure that whenever we call the create function
 // that we are going to get back a promise that automatically resolves itself
 // with an empty object
-export const stripe = {
+export const stripeOldMock = {
   charges: {
     create: jest.fn().mockResolvedValue({})
   }
