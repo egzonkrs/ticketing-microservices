@@ -5,6 +5,7 @@ import { signin } from '../../test/signin-helper';
 import { OrderStatus } from '@ek-ticketing/common';
 import { Order } from '../../models/order';
 import { stripe } from '../../stripe';
+import { Payment } from '../../models/payment';
 
 // // redirect requestin tek 'stripe.ts'
 // jest.mock('../../stripe.ts');
@@ -92,6 +93,14 @@ it('returns a 204 with a valid inputs', async () => {
   });
 
   expect(stripeCharge).toBeDefined();
+  expect(stripeCharge!.currency).toEqual('usd');
+
+  const payment = await Payment.findOne({
+    orderId: order.id,
+    stripeId: stripeCharge!.id
+  });
+
+  expect(payment).not.toBeNull();
   // !! Stripe Mock Testing Method !!
   // const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
   // expect(chargeOptions.source).toEqual("tok_visa");
