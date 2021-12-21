@@ -10,7 +10,7 @@ const MyApp = ({ Component, pageProps, currentUser }) => {
       {/* <h1>Header - {currentUser.email}</h1> */}
       <Header currentUser={currentUser} />
       <PageContainer>
-        <Component {...pageProps} />
+        <Component {...pageProps} currentUser={currentUser} />
       </PageContainer>
     </ChakraProvider>
   );
@@ -19,16 +19,20 @@ const MyApp = ({ Component, pageProps, currentUser }) => {
 MyApp.getInitialProps = async (appContext) => {
   const client = buildClient(appContext.ctx);
   const { data } = await client.get('/api/users/currentuser');
-
   let pageProps = {};
   if (appContext.Component.getInitialProps) {
-    pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+    pageProps = await appContext.Component.getInitialProps(
+      appContext.ctx,
+      client,
+      data
+    );
   }
   // console.log('app getinitial props');
   return {
     pageProps,
     ...data,
   };
+  // return {};
 };
 
 export default MyApp;

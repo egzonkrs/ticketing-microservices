@@ -11,18 +11,16 @@ const Home = (currentUser) => {
           <span>{JSON.stringify(currentUser)}</span>
         </>
       ) : (
-        <h1>you are not signed in</h1>
+        <h1>you aree not signed in</h1>
       )}
     </div>
   );
 };
 
-Home.getInitialProps = async (context) => {
-  // console.log('L A N D I N G  P A G E');
-  const client = buildClient(context);
-  const { data } = await client.get('/api/users/currentuser');
-  // console.log(data);
-  return data;
+Home.getInitialProps = async (context, client, currentUser) => {
+  // const client = buildClient(context);
+  // const { data } = await client.get('/api/users/currentuser');
+  return {};
 };
 
 export default Home;

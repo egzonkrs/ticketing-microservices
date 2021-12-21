@@ -16,8 +16,13 @@ const Account = {
   signout: () => requests.post('/api/users/signout', {}),
 };
 
+const Tickets = {
+  create: (ticket) => requests.post('/api/tickets', ticket),
+};
+
 const agent = {
   Account,
+  Tickets,
 };
 
 export default agent;

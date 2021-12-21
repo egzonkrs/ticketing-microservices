@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import agent from '../api/agent';
 
-export default function useRequest({ method, body, onSuccess }) {
+export default function useTicketsRequest({ method, body, onSuccess }) {
   const [errors, setErrors] = useState({});
 
   const doRequest = async () => {
     try {
       setErrors({});
 
-      const response = await agent.Account[method](body);
+      const response = await agent.Tickets[method](body);
 
       if (onSuccess) {
         onSuccess(response);

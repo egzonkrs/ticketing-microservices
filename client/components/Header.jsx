@@ -227,14 +227,19 @@ const DesktopNav = () => {
 };
 
 const DesktopSubNav = ({ label, href, subLabel }) => {
+  const router = useRouter();
   return (
-    <Link
-      href={href}
+    <Box
+      // href={href}
       role={'group'}
       display={'block'}
       p={2}
       rounded={'md'}
-      _hover={{ bg: useColorModeValue('blue.50', 'gray.900') }}
+      _hover={{
+        bg: useColorModeValue('blue.50', 'gray.900'),
+        cursor: 'pointer',
+      }}
+      onClick={() => router.push(`${href ?? '/'}`)}
     >
       <Stack direction={'row'} align={'center'}>
         <Box>
@@ -259,7 +264,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
           <Icon color={'blue.400'} w={5} h={5} as={ChevronRightIcon} />
         </Flex>
       </Stack>
-    </Link>
+    </Box>
   );
 };
 
@@ -336,22 +341,17 @@ const NAV_ITEMS = [
     href: '/',
   },
   {
-    label: 'Work',
+    label: 'Tickets',
     children: [
       {
-        label: 'Explore Design Work',
-        subLabel: 'Trending Design to inspire you',
-        href: '#',
-      },
-      {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
-        href: '#',
+        label: 'Create',
+        subLabel: 'Create new tickets and sell them',
+        href: '/tickets/new',
       },
     ],
   },
   {
-    label: 'Contact',
+    label: 'Orders',
     children: [
       {
         label: 'Job Board',
