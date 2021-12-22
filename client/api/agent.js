@@ -20,9 +20,14 @@ const Tickets = {
   create: (ticket) => requests.post('/api/tickets', ticket),
 };
 
+const Orders = {
+  create: (ticketId) => requests.post('/api/orders', ticketId),
+};
+
 const agent = {
   Account,
   Tickets,
+  Orders,
 };
 
 export default agent;

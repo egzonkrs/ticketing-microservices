@@ -15,14 +15,15 @@ import {
 
 import { useState } from 'react';
 import Router, { useRouter } from 'next/router';
-import useTicketsRequest from '../../hooks/useTicketsRequest';
+import useRequest from '../../hooks/useRequest';
 
 export default function NewTicket({ color, host }) {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
 
-  const { doRequest, errors } = useTicketsRequest({
+  const { doRequest, errors } = useRequest({
+    request: 'Tickets',
     method: 'create',
     body: { title, price },
     onSuccess: (ticket) => Router.push('/'),
@@ -30,8 +31,8 @@ export default function NewTicket({ color, host }) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    // await doRequest();
-    console.log(title, price);
+    await doRequest();
+    console.log(title, price, 'asdasd');
     // Router.push('/');
   };
 
@@ -45,7 +46,7 @@ export default function NewTicket({ color, host }) {
 
   return (
     <Flex
-      minH={'100vh'}
+      minH={'80vh'}
       align={'center'}
       justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}
@@ -69,16 +70,16 @@ export default function NewTicket({ color, host }) {
                 {/* {JSON.stringify(errors.length)} */}
                 <FormLabel>Title</FormLabel>
                 <Input
-                  // isInvalid={
-                  //   errors.errors != null && errors.errors['title']
-                  //     ? true
-                  //     : false
-                  // }
+                  isInvalid={
+                    errors.errors != null && errors.errors['title']
+                      ? true
+                      : false
+                  }
                   type="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
-                {/* {errors.errors != null && (
+                {errors.errors != null && (
                   <>
                     <FormHelperText
                       marginTop={0.5}
@@ -88,22 +89,22 @@ export default function NewTicket({ color, host }) {
                       {errors.errors['title']}
                     </FormHelperText>
                   </>
-                )} */}
+                )}
               </FormControl>
               <FormControl id="price" minHeight={'93px'}>
                 <FormLabel>Price</FormLabel>
                 <Input
-                  // isInvalid={
-                  //   errors.errors != null && errors.errors['price']
-                  //     ? true
-                  //     : false
-                  // }
+                  isInvalid={
+                    errors.errors != null && errors.errors['price']
+                      ? true
+                      : false
+                  }
                   type="number"
                   value={price}
                   onBlur={onBlur}
                   onChange={(e) => setPrice(e.target.value)}
                 />
-                {/* {errors.errors != null && (
+                {errors.errors != null && (
                   <>
                     <FormHelperText
                       marginTop={0.5}
@@ -113,7 +114,7 @@ export default function NewTicket({ color, host }) {
                       {errors.errors['price']}
                     </FormHelperText>
                   </>
-                )} */}
+                )}
               </FormControl>
               <Stack spacing={1}>
                 <Button

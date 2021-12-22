@@ -6,6 +6,7 @@ import useRequest from '../../hooks/useRequest';
 export default function SignOut() {
   const router = useRouter();
   const { doRequest } = useRequest({
+    request: 'Account',
     method: 'signout',
     body: {},
     onSuccess: () => router.push('/auth/signin'),

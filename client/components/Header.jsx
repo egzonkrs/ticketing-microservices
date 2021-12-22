@@ -35,7 +35,7 @@ import AppLogo from '../components/AppLogo';
 export default function WithSubnavigation({ currentUser }) {
   const router = useRouter();
   const { isOpen, onToggle } = useDisclosure();
-
+  console.log('Rendering header.....');
   return (
     <Box>
       <Flex
@@ -103,9 +103,7 @@ export default function WithSubnavigation({ currentUser }) {
                     >
                       <Avatar
                         size={'sm'}
-                        src={
-                          'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                        }
+                        src={'https://i.imgur.com/D6XUo3R.png'}
                       />
                     </MenuButton>
                     <MenuList>
