@@ -1,7 +1,10 @@
 name: tests-auth
 
 # Controls when the workflow will run
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - 'auth/**'
 
 jobs:
   build:
