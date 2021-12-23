@@ -76,14 +76,14 @@ const OrderShow = ({ order, currentUser }) => {
       >
         <Box bg={'blue.800'} my={'1rem'} rounded={'lg'} px={'12px'} py={'10px'}>
           <Text fontSize={'xl'} fontWeight={'bold'} textColor={'white'}>
-            Time left to pay: {timeLeft} seconds
+            Time left to pay: {timeLeft} minutes
           </Text>
         </Box>
         {/* {JSON.stringify(errors)} */}
         <StripeCheckout
           token={({ id }) => doRequest({ token: id })}
           stripeKey="pk_test_51K8VkiB1T2BkgrQVw69lV3t9vGZV5VeNoLH7FLagkMxfmwcoxKhrEPYMAZnFk38wKQ0PvIPpBXSIhi2Aie1Ka6hi003yTEBsMf"
-          amount={order.ticket.price}
+          amount={order.ticket.price * 100}
           email={currentUser.email}
           description="Ticketing | Payment" // the pop-in header subtitle
           image="https://i.imgur.com/Iuj9Mf7.png"

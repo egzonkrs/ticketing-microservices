@@ -23,7 +23,7 @@ const TicketShow = ({ ticket }) => {
           {ticket.title}
         </Text>
         <Text fontWeight={'semibold'} fontSize={'2xl'} my={'10px'}>
-          ${title.price}
+          ${ticket.price}
         </Text>
         {errors.errors != null && (
           <>

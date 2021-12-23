@@ -23,10 +23,10 @@ const OrderIndex = ({ orders }) => {
               <>
                 {orders.map((order) => (
                   <Tr key={order.id}>
-                    <Td fontWeight={'semibold'}>{order.title}</Td>
+                    <Td fontWeight={'semibold'}>{order.ticket.title}</Td>
                     <Td fontWeight={'semibold'}>{order.status}</Td>
                     <Td fontWeight={'semibold'} isNumeric>
-                      ${order.price}
+                      ${order.ticket.price}
                     </Td>
                   </Tr>
                 ))}
@@ -48,7 +48,8 @@ const OrderIndex = ({ orders }) => {
 };
 
 OrderIndex.getInitialProps = async (context, client) => {
-  const { data } = client.get('/api/orders');
+  const { data } = await client.get('/api/orders');
+  console.log(data);
   return { orders: data };
   // return {};
 };

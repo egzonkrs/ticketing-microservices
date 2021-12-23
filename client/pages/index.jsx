@@ -49,7 +49,7 @@ const Home = ({ tickets }) => {
 };
 
 Home.getInitialProps = async (context, client, currentUser) => {
-  const client = buildClient(context);
+  // const client = buildClient(context);
   const { data } = await client.get('/api/tickets');
   return { tickets: data, currentUser };
   // return {};
