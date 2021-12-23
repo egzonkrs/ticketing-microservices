@@ -8,7 +8,7 @@ import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
   const port = process.env.PORT || 3000;
-
+  console.log('Starting orders service...');
   if (!process.env.JWT_KEY) {
     throw new Error('[Tickets] - JWT_KEY must be defined!');
   } else if (!process.env.MONGO_URI) {
