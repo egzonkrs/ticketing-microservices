@@ -7,7 +7,6 @@ import PageContainer from '../components/PageContainer';
 const MyApp = ({ Component, pageProps, currentUser }) => {
   return (
     <ChakraProvider>
-      {/* <h1>Header - {currentUser.email}</h1> */}
       <Header currentUser={currentUser} />
       <PageContainer>
         <Component {...pageProps} currentUser={currentUser} />

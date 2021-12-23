@@ -24,10 +24,15 @@ const Orders = {
   create: (ticketId) => requests.post('/api/orders', ticketId),
 };
 
+const Payments = {
+  create: (orderId) => requests.post('/api/payments', orderId),
+};
+
 const agent = {
   Account,
   Tickets,
   Orders,
+  Payments,
 };
 
 export default agent;

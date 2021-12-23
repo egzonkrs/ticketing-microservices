@@ -26,7 +26,7 @@ export default function NewTicket({ color, host }) {
     request: 'Tickets',
     method: 'create',
     body: { title, price },
-    onSuccess: (ticket) => Router.push('/'),
+    onSuccess: () => Router.push('/'),
   });
 
   const onSubmit = async (event) => {

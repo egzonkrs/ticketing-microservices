@@ -349,20 +349,8 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: 'Orders',
-    children: [
-      {
-        label: 'Job Board',
-        subLabel: 'Find your dream design job',
-        href: '#',
-      },
-      {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
-        href: '#',
-      },
-    ],
-    href: '#',
+    label: 'My Orders',
+    href: '/orders',
   },
   {
     label: 'About',
